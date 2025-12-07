@@ -438,18 +438,14 @@ void UrgNode2NL::scan_thread_func(void)
         sensor_msgs::msg::LaserScan::UniquePtr msg =
           std::make_unique<sensor_msgs::msg::LaserScan>();
         if (create_laserscan_message(msg)) {
-          RCLCPP_INFO(get_logger(), "created laserscan message");
           if (publish_pointcloud2_) {
             sensor_msgs::msg::PointCloud2::UniquePtr pc2_msg =
               std::make_unique<sensor_msgs::msg::PointCloud2>();
             convert_laserscan_to_pointcloud2(msg, pc2_msg);
-            RCLCPP_INFO(get_logger(), "created pointcloud2 message");
             pointcloud2_pub_->publish(std::move(pc2_msg));
-            RCLCPP_INFO(get_logger(), "published pointcloud2 message");
           }
           if (publish_laserscan_) {
             laserscan_pub_->publish(std::move(msg));
-            RCLCPP_INFO(get_logger(), "published laserscan message");
           }
         } else {
           RCLCPP_WARN(get_logger(), "could not get single echo scan.");
