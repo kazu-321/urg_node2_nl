@@ -376,9 +376,9 @@ void UrgNode2NL::convert_laserscan_to_pointcloud2(
   sensor_msgs::PointCloud2Iterator<float> iter_y(*pointcloud2_msg, "y");
   sensor_msgs::PointCloud2Iterator<float> iter_z(*pointcloud2_msg, "z");
 
-  for (int i = 0; i < laserscan_msg->ranges.size(); ++i, ++iter_x, ++iter_y, ++iter_z) {
+  for (size_t i = 0; i < laserscan_msg->ranges.size(); ++i, ++iter_x, ++iter_y, ++iter_z) {
     float r = laserscan_msg->ranges[i];
-    if (r < laserscan_msg->range_min || r > laserscan_msg->range_max) {
+    if (std::isnan(r) || r < laserscan_msg->range_min || r > laserscan_msg->range_max) {
       *iter_x = *iter_y = *iter_z = std::numeric_limits<float>::quiet_NaN();
       continue;
     }
